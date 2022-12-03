@@ -1,6 +1,85 @@
-def main():
-    pass
+from fastapi import FastAPI, Request
+from fastapi.responses import HTMLResponse
+from fastapi.templating import Jinja2Templates
+from fastapi.staticfiles import StaticFiles
+import random
+from operator import add, sub, floordiv, mul
+
+app = FastAPI()
+app.mount("/static", StaticFiles(directory="static"), name="static")
+templates = Jinja2Templates(directory="templates")
 
 
-if __name__ == '__main__':
-    main()
+def find_divisible_numbers():
+    dividend = random.randint(1, 1000)
+    divisor = random.randint(1, 1000)
+    while (dividend % divisor) != 0:
+        dividend = random.randint(1, 1000)
+        divisor = random.randint(1, 1000)
+    return dividend, divisor
+
+
+def table_filler(exercises: list, results: list):
+    ops = {"+": add, "-": sub, '/': floordiv, '*': mul}
+
+    operators = ['+', '-', '/', '*']
+    str_operator = operators[random.randint(0, 3)]
+    x_pos = random.randint(1, 3)
+
+    if str_operator == '/':
+        var_1, var_2 = find_divisible_numbers()
+    else:
+        var_1 = random.randint(0, 1000)
+        var_2 = random.randint(0, 1000)
+    fun_operator = ops[str_operator]
+    var_3 = fun_operator(var_1, var_2)
+    results.append(
+        {
+            "var_1": var_1,
+            "operator": str_operator,
+            "var_2": var_2,
+            "var_3": var_3
+        }
+    )
+
+    if x_pos == 1:
+        var_1 = 'X'
+    elif x_pos == 2:
+        var_2 = 'X'
+    elif x_pos == 3:
+        var_3 = 'X'
+
+    exercises.append(
+        {
+            "var_1": var_1,
+            "operator": str_operator,
+            "var_2": var_2,
+            "var_3": var_3
+        }
+    )
+
+
+@app.get("/", response_class=HTMLResponse)
+async def home(request: Request):
+    exercises = []
+    results = []
+
+    for i in range(0, 25):
+        table_filler(exercises, results)
+
+    return templates.TemplateResponse(
+        "page.html",
+        {
+            "request": request,
+            "exercises": exercises,
+            "results": results
+        }
+    )
+
+
+@app.get("/page/{page_name}", response_class=HTMLResponse)
+async def page(request: Request, page_name: str):
+    data = {
+        "page": page_name
+    }
+    return templates.TemplateResponse("page.html", {"request": request, "data": data})
