@@ -12,22 +12,26 @@ templates = Jinja2Templates(directory="templates")
 
 def find_divisible_numbers():
     dividend = random.randint(1, 1000)
-    divisor = random.randint(1, 1000)
+    divisor = random.randint(1, 20)
     while (dividend % divisor) != 0:
         dividend = random.randint(1, 1000)
-        divisor = random.randint(1, 1000)
+        divisor = random.randint(1, 20)
     return dividend, divisor
 
 
 def table_filler(exercises: list, results: list):
-    ops = {"+": add, "-": sub, '/': floordiv, '*': mul}
+    ops = {"+": add, "-": sub, ':': floordiv, '*': mul}
 
-    operators = ['+', '-', '/', '*']
+    operators = ['+', '-', ':', '*']
     str_operator = operators[random.randint(0, 3)]
     x_pos = random.randint(1, 3)
 
-    if str_operator == '/':
+    if str_operator == ':':
         var_1, var_2 = find_divisible_numbers()
+        str_operator = ':'
+    elif str_operator == '*':
+        var_1 = random.randint(0, 1000)
+        var_2 = random.randint(0, 10)
     else:
         var_1 = random.randint(0, 1000)
         var_2 = random.randint(0, 1000)
@@ -43,11 +47,11 @@ def table_filler(exercises: list, results: list):
     )
 
     if x_pos == 1:
-        var_1 = 'X'
+        var_1 = ''
     elif x_pos == 2:
-        var_2 = 'X'
+        var_2 = ''
     elif x_pos == 3:
-        var_3 = 'X'
+        var_3 = ''
 
     exercises.append(
         {
