@@ -6,7 +6,7 @@ import random
 from operator import add, sub, floordiv, mul
 
 app = FastAPI()
-app.mount("/static", StaticFiles(directory="static"), name="static")
+app.mount("/static", StaticFiles(directory="_static"), name="static")
 templates = Jinja2Templates(directory="templates")
 
 
@@ -79,11 +79,3 @@ async def home(request: Request):
             "results": results
         }
     )
-
-
-@app.get("/page/{page_name}", response_class=HTMLResponse)
-async def page(request: Request, page_name: str):
-    data = {
-        "page": page_name
-    }
-    return templates.TemplateResponse("page.html", {"request": request, "data": data})
