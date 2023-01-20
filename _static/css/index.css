@@ -1,0 +1,36 @@
+header {
+background-color: #F5F5F5;
+padding: 20px;
+}
+
+#title {
+text-align: center;
+font-size: 2em;
+font-weight: bold;
+}
+
+/* Style the navigation menu */
+nav {
+text-align: center;
+}
+
+nav ul {
+list-style-type: none;
+margin: 0;
+padding: 0;
+}
+
+nav li {
+display: inline-block;
+margin: 0 10px;
+}
+
+nav a {
+text-decoration: none;
+color: #333;
+font-weight: bold;
+}
+
+nav a:hover {
+color: #00BFFF;
+}
