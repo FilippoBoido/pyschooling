@@ -10,6 +10,24 @@ app.mount("/static", StaticFiles(directory="_static"), name="static")
 templates = Jinja2Templates(directory="templates")
 
 
+def https_url_for(request: Request, name: str, **path_params) -> str:
+    """ Workaround function, since jinja2 url_for does not construct the path with https
+
+    :param request:
+    :param name:
+    :param path_params:
+    :return:
+    """
+    http_url = request.url_for(name, **path_params)
+    if 'localhost' in http_url:
+        return http_url
+    else:
+        return http_url.replace("http", "https", 1)
+
+
+templates.env.globals["https_url_for"] = https_url_for
+
+
 def find_divisible_numbers():
     dividend = random.randint(1, 1000)
     divisor = random.randint(1, 20)
