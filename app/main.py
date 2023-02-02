@@ -95,7 +95,7 @@ async def mixed_excercises_medium(request: Request):
     exercises = []
     results = []
 
-    for i in range(0, 25):
+    for i in range(0, 38):
         table_filler(exercises, results)
 
     return templates.TemplateResponse(
@@ -108,13 +108,29 @@ async def mixed_excercises_medium(request: Request):
     )
 
 
+@app.get("/multi-and-divisions", response_class=HTMLResponse)
+async def mixed_excercises_medium(request: Request):
+    exercises = []
+    results = []
+
+    for i in range(0, 38):
+        table_filler(exercises, results, [':', '*'])
+
+    return templates.TemplateResponse(
+        "page.html",
+        {
+            "request": request,
+            "exercises": exercises,
+            "results": results
+        }
+    )
 
 @app.get("/sum-and-sub-medium", response_class=HTMLResponse)
 async def sum_and_sub_medium(request: Request):
     exercises = []
     results = []
 
-    for i in range(0, 25):
+    for i in range(0, 38):
         table_filler(exercises, results,['+', '-'])
 
     return templates.TemplateResponse(
@@ -132,7 +148,7 @@ async def add_simple(request: Request):
     exercises = []
     results = []
 
-    for i in range(0, 25):
+    for i in range(0, 38):
         table_filler(exercises, results,['+'], 10)
 
     return templates.TemplateResponse(
